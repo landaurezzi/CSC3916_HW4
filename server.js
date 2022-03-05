@@ -85,6 +85,62 @@ router.post('/signin', function (req, res) {
     })
 });
 
+router.route('/movies')
+//jwt authenticated
+.get(authJwtController.isAuthenticated, function(req, res) {
+    console.log(req.body);
+    //status 200 and message
+    res = res.status(200);
+    //header and string from request
+    var o = getJSONObjectForMovieRequirement(res.status, 'GET movies', req);
+    //pass object from method
+    res.json(o);
+}
+)
+
+//jwt authenticated
+.post(authJwtController.isAuthenticated, function(req, res) {
+    console.log(req.body);
+    //status 200 and message
+    res = res.status(200);
+    //header and string from request
+    var o = getJSONObjectForMovieRequirement(res.status, 'movie saved', req);
+    //pass object from method
+    res.json(o);
+}
+)
+
+//jwt authenticated
+.put(authJwtController.isAuthenticated, function(req, res) {
+    console.log(req.body);
+    //status 200 and message
+    res = res.status(200);
+    //header and string from request
+    var o = getJSONObjectForMovieRequirement(res.status, 'movie updated', req);
+
+    if (req.get('Content-Type')) {
+        res = res.type(req.get('Content-Type'));
+    }
+    //var o = getJSONObjectForMovieRequirement(req);
+    res.json(o);
+}
+)
+
+//jwt authenticated
+.delete(authJwtController.isAuthenticated, function(req, res) {
+    console.log(req.body);
+    //status 200 and message
+    res = res.status(200);
+    //header and string from request
+    var o = getJSONObjectForMovieRequirement(res.status, 'movie deleted', req);
+
+    if (req.get('Content-Type')) {
+        res = res.type(req.get('Content-Type'));
+    }
+    //var o = getJSONObjectForMovieRequirement(req);
+    res.json(o);
+})
+
 app.use('/', router);
 app.listen(process.env.PORT || 8080);
 module.exports = app; // for testing only
