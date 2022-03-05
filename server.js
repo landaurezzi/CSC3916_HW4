@@ -100,15 +100,36 @@ router.route('/movies')
 
 //jwt authenticated
 .post(authJwtController.isAuthenticated, function(req, res) {
-    console.log(req.body);
-    //status 200 and message
-    res = res.status(200);
-    //header and string from request
-    var o = getJSONObjectForMovieRequirement(res.status, 'movie saved', req);
-    //pass object from method
-    res.json(o);
-}
-)
+    //checking if all entries have been filled
+    if(!req.body.Title && !req.body.YearReleased && !req.body.genre && !req.body.Actors[0] && !req.body.Actors[1] && !req.body.Actors[2]){
+        return res.json({success: false, message: 'Please complete all the information asked for all entries.'});
+    }
+    //if all entries have been filled, proceed to save movie
+    else{
+        //generating fields
+        var movie = new Movie();
+        movie.Title = req.body.Title;
+        movie.YearReleased = req.body.YearReleased;
+        movie.genre = req.body.genre;
+        movie.Actors = req.body.Actors;
+
+        movie.save(function(err){
+            //check if movie is in database
+            if (err) {
+                if (err.code == 11000)
+                    return res.json({ success: false, message: 'Movie already exists.'});
+                else
+                    return res.json(err);
+                
+                
+            }
+            //if not, add movie to database
+            else
+                return res.status(200).send({success: true, message: 'Movie successfully created.'});
+
+        });
+    }
+})
 
 //jwt authenticated
 .put(authJwtController.isAuthenticated, function(req, res) {
