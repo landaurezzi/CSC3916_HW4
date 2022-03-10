@@ -11,10 +11,10 @@ try {
 }catch (error) {
     console.log("could not connect");
 }
-mongoose.set('useCreateIndex', true);
+//mongoose.set('useCreateIndex', true);
 
 //movie schema
-var Schema = new Schema({
+var MovieSchema = new Schema({
     Title: {type: String, required: true},
     YearReleased: {type: String, required: true},
     genre: {

@@ -12,7 +12,7 @@ var authJwtController = require('./auth_jwt');
 var jwt = require('jsonwebtoken');
 var cors = require('cors');
 var User = require('./Users');
-
+var Movie = require('./movies');
 var app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -88,21 +88,30 @@ router.post('/signin', function (req, res) {
 router.route('/movies')
 //jwt authenticated
 .get(authJwtController.isAuthenticated, function(req, res) {
-    console.log(req.body);
-    //status 200 and message
-    res = res.status(200);
-    //header and string from request
-    var o = getJSONObjectForMovieRequirement(res.status, 'GET movies', req);
-    //pass object from method
-    res.json(o);
-}
-)
+    //verify if movie has title
+    if(!req.body.Title)
+        return res.json({success: false, message: "Please provide a title for the movie."});
+    else{
+        Movie.find(req.body.find_Title).select("").exec(function(err, movie){
+            if(err){
+                return res.status(403).json({success: false, message: "Unable to retrieve movie."});
+            }
+            //code retrieved from github
+            if (movie && movie.length > 0) {
+                return res.status(200).json({success: true, message: "Successfully retrieved movie.", movie: movie});
+            }
+            else{
+                return res.status(404).json({success: false, message: "Movie not found."});
+            }
+        })
+    }
+})
 
 //jwt authenticated
 .post(authJwtController.isAuthenticated, function(req, res) {
-    //checking if all entries have been filled
+    //verify if all entries have been filled
     if(!req.body.Title && !req.body.YearReleased && !req.body.genre && !req.body.Actors[0] && !req.body.Actors[1] && !req.body.Actors[2]){
-        return res.json({success: false, message: 'Please complete all the information asked for all entries.'});
+        return res.json({success: false, message: "Please complete all the information asked for all entries."});
     }
     //if all entries have been filled, proceed to save movie
     else{
@@ -133,37 +142,50 @@ router.route('/movies')
 
 //jwt authenticated
 .put(authJwtController.isAuthenticated, function(req, res) {
-    console.log(req.body);
-    //status 200 and message
-    res = res.status(200);
-    //header and string from request
-    var o = getJSONObjectForMovieRequirement(res.status, 'movie updated', req);
-
-    if (req.get('Content-Type')) {
-        res = res.type(req.get('Content-Type'));
+    //verify if movie has title
+    if(!req.body.find_Title &&  !req.body.update_Title){
+        return res.json({success: false, message: "Please fill current and new title to update movie."});
     }
-    //var o = getJSONObjectForMovieRequirement(req);
-    res.json(o);
-}
-)
+    else{
+        Movie.findOneAndUpdate(req.body.find_Title, req.body.update_Title, function(err, movie){
+            if(err){
+                return res.status(403).json({success: false, message: "Unable to update movie title."});
+            }
+            else if(!movie){
+                return res.status(403).json({success: false, message: "Unable to update movie title."});
+            }
+            else{
+                return res.status(200).send({success: true, message: 'Movie successfully updated.'});
+            }
+        })
+    }
+})
 
 //jwt authenticated
 .delete(authJwtController.isAuthenticated, function(req, res) {
-    console.log(req.body);
-    //status 200 and message
-    res = res.status(200);
-    //header and string from request
-    var o = getJSONObjectForMovieRequirement(res.status, 'movie deleted', req);
-
-    if (req.get('Content-Type')) {
-        res = res.type(req.get('Content-Type'));
+    //verify if movie has title
+    if(!req.body.find_Title){
+        return res.json({success: false, message: "Please provide a title for the movie."});
     }
-    //var o = getJSONObjectForMovieRequirement(req);
-    res.json(o);
+    else{
+        Movie.findOneAndDelete(req.body.find_Title, function(err, movie){
+            if(err){
+                return res.status(403).json({success: false, message: "Unable to delete movie title."});
+            }
+            else if(!movie){
+                return res.status(403).json({success: false, message: "Unable to delete movie title."});
+            }
+            else{
+                return res.status(200).send({success: true, message: 'Movie successfully deleted.'});
+            }
+        })
+    }
 })
+
+router.all('/', function (req, res) {
+    return res.status(403).json({ success: false, msg: 'Route not supported.' });
+});
 
 app.use('/', router);
 app.listen(process.env.PORT || 8080);
 module.exports = app; // for testing only
-
-
