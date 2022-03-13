@@ -143,63 +143,6 @@ router.route('/movies')
     }
 });
 
-/*
-//jwt authenticated
-.put(authJwtController.isAuthenticated, function(req, res) {
-    //verify if movie has title
-    if(!req.body.find_Title &&  !req.body.update_Title){
-        return res.json({success: false, message: "Please fill current and new title to update movie."});
-    }
-    else{
-        Movie.findOneAndUpdate(req.body.find_Title, req.body.update_Title, function(err, movie){
-            if(err){
-                return res.status(403).json({success: false, message: "Unable to update movie title."});
-            }
-            else if(!movie){
-                return res.status(403).json({success: false, message: "Unable to update movie title."});
-            }
-            else{
-                return res.status(200).send({success: true, message: 'Movie successfully updated.'});
-            }
-        })
-    }
-})
-
-//jwt authenticated
-.delete(authJwtController.isAuthenticated, function(req, res) {
-    //verify if movie has title
-    if(!req.body.find_Title){
-        return res.json({success: false, message: "Please provide a title for the movie."});
-    }
-    else{
-        Movie.findOneAndDelete(req.body.find_Title, function(err, movie){
-            if(err){
-                return res.status(403).json({success: false, message: "Unable to delete movie title."});
-            }
-            else if(!movie){
-                return res.status(403).json({success: false, message: "Unable to delete movie title."});
-            }
-            else{
-                return res.status(200).send({success: true, message: 'Movie successfully deleted.'});
-            }
-        })
-    }
-})
-*/
-/*
-router.route('/movies/:movieTitle')
-.get(authJwtController.isAuthenticated, function(req, res) {
-    //res.send
-    Movie.findOne({Title: req.params.movieTitle}, function(err, movie) {
-    if (!movie) {
-        res.status(404).send('No result found');
-    }
-    else {
-        res.json(movie);
-    }
-});
-*/
-
 router.route('/movies/:movieTitle')
 .get(authJwtController.isAuthenticated, function(req, res) {
     //res.send
