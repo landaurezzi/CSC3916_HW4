@@ -85,6 +85,18 @@ router.post('/signin', function (req, res) {
     })
 });
 
+router.route('/movies/:movieTitle')
+.get(authJwtController.isAuthenticated, function(req, res) {
+    //res.send
+    Movie.findOne({Title: req.params.movieTitle}, function(err, movie) {
+    if (!movie) {
+        res.status(404).send('No result found');
+    }
+    else {
+        res.json(movie);
+    }
+});
+
 router.route('/movies')
 //jwt authenticated
 .get(authJwtController.isAuthenticated, function(req, res) {
@@ -182,7 +194,9 @@ router.route('/movies')
     }
 })
 
-.get('/movies/:movieTitle', function(req, res) {
+/*
+router.route('/movies/:movieTitle')
+.get(authJwtController.isAuthenticated, function(req, res) {
     //res.send
     Movie.findOne({Title: req.params.movieTitle}, function(err, movie) {
     if (!movie) {
@@ -192,6 +206,7 @@ router.route('/movies')
         res.json(movie);
     }
 });
+*/
 
 })
 
