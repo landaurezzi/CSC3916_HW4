@@ -182,8 +182,17 @@ router.route('/movies')
     }
 })
 
-.get('/movies/:movieTitle', (req, body) => {
-    res.send(req.params)
+.get('/movies/:movieTitle', function(req, body) {
+    //res.send
+    Movie.findOne(req.params.Title, function(err, movie) {
+    if (!movie) {
+        res.status(404).send('No result found');
+    }
+    else {
+        res.json(movie);
+    }
+});
+
 })
 
 router.all('/', function (req, res) {

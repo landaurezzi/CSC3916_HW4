@@ -27,6 +27,9 @@ var MovieSchema = new Schema({
         {ActorName: {type: String, required: true}, CharacterName: {type: String, required: true}},
         {ActorName: {type: String, required: true}, CharacterName: {type: String, required: true}}
     ]
+    /*
+    Movie.findOneAndUpdate(req.body.find_Title, req.body.update_Title, function(err, movie)
+    */
 });
 
 MovieSchema.pre('save', function(next) {
