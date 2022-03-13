@@ -182,6 +182,10 @@ router.route('/movies')
     }
 })
 
+.get('/movies/movieTitle', (req, body) => {
+    res.send(req.params)
+})
+
 router.all('/', function (req, res) {
     return res.status(403).json({ success: false, msg: 'Route not supported.' });
 });
