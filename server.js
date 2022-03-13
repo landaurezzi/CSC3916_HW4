@@ -182,9 +182,9 @@ router.route('/movies')
     }
 })
 
-.get('/movies/:movieTitle', function(req, body) {
+.get('/movies/:movieTitle', function(req, res) {
     //res.send
-    Movie.findOne(req.params.Title, function(err, movie) {
+    Movie.findOne({Title: req.params.movieTitle}, function(err, movie) {
     if (!movie) {
         res.status(404).send('No result found');
     }
