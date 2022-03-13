@@ -182,7 +182,7 @@ router.route('/movies')
     }
 })
 
-.get('/movies/movieTitle', (req, body) => {
+.get('/movies/:movieTitle', (req, body) => {
     res.send(req.params)
 })
 
