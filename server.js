@@ -145,7 +145,7 @@ router.route('/movies')
 
 router.route('/movies/:movieTitle')
 .get(authJwtController.isAuthenticated, function(req, res) {
-    //res.send
+    //find movie title
     Movie.findOne({Title: req.params.movieTitle}, function(err, movie) {
     if (!movie) {
         res.status(404).send('No result found');
@@ -157,43 +157,36 @@ router.route('/movies/:movieTitle')
 })
 
 .put(authJwtController.isAuthenticated, function(req, res) {
-    //verify if movie has title
+    //find movie title
     Movie.findOne({Title: req.params.movieTitle}, function(err, movie){
-    if(!req.body.find_Title || !req.body.update_Title){
+    //if movie is null, then it didn't find movie
+    if(!req.body.movie.Title){
         return res.json({success: false, message: "Please fill current and new title to update movie."});
     }
     else{
-        Movie.findOneAndUpdate(req.body.find_Title, req.body.update_Title, function(err, movie){
-            if(err){
-                return res.status(403).json({success: false, message: "Unable to update movie title."});
-            }
-            else if(!movie){
-                return res.status(403).json({success: false, message: "Unable to update movie title."});
+        //update movie parameters to the ones coming in
+        movie.Title = req.body.Title;
+        movie.YearReleased = req.body.YearReleased;
+        movie.genre = req.body.genre;
+        movie.Actors = req.body.Actors;
+        movie.save(function(err){
+        //check if movie is in database
+        if (err) {
+            if (err.code == 11000){
+                return res.json({ success: false, message: 'Movie already exists.'});
             }
             else{
-
-                movie.save(function(err){
-                //check if movie is in database
-                if (err) {
-                    if (err.code == 11000){
-                        return res.json({ success: false, message: 'Movie already exists.'});
-                    }
-                    else{
-                        return res.json(err);
-                    }
+                return res.json(err);
+            }               
+        }
+        //if not, update movie to database
+        else{
+            return res.status(200).send({success: true, message: 'Movie successfully updated.'});
+        }
+        });
                 
-                }
-                //if not, update movie to database
-                else{
-                    return res.status(200).send({success: true, message: 'Movie successfully updated.'});
-                }
-                });
-                
-            }
-        })
     }
-
-})
+    })
 })
 //jwt authenticated
 .delete(authJwtController.isAuthenticated, function(req, res) {
