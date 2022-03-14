@@ -158,7 +158,7 @@ router.route('/movies/:movieTitle')
 
 .put(authJwtController.isAuthenticated, function(req, res) {
     //verify if movie has title
-    Movie.findOne({Title: req.params.find_Title}, function(err, movie){
+    Movie.findOne({Title: find_Title}, function(err, movie){
     if(!req.body.find_Title &&  !req.body.update_Title){
         return res.json({success: false, message: "Please fill current and new title to update movie."});
     }
