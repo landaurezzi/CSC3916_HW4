@@ -158,7 +158,7 @@ router.route('/movies/:movieTitle')
 
 .put(authJwtController.isAuthenticated, function(req, res) {
     //verify if movie has title
-    Movie.findOne({Title: find_Title}, function(err, movie){
+    Movie.findOne({Title: req.params.movieTitle}, function(err, movie){
     if(!req.body.find_Title &&  !req.body.update_Title){
         return res.json({success: false, message: "Please fill current and new title to update movie."});
     }
@@ -171,13 +171,34 @@ router.route('/movies/:movieTitle')
                 return res.status(403).json({success: false, message: "Unable to update movie title."});
             }
             else{
-                return res.status(200).send({success: true, message: 'Movie successfully updated.'});
+                //generating fields
+                var movie = new Movie();
+                movie.Title = req.body.Title;
+                movie.YearReleased = req.body.YearReleased;
+                movie.genre = req.body.genre;
+                movie.Actors = req.body.Actors;
+
+                movie.save(function(err){
+                //check if movie is in database
+                if (err) {
+                    if (err.code == 11000)
+                        return res.json({ success: false, message: 'Movie already exists.'});
+                    else
+                        return res.json(err);
+                
+                
+                }
+                //if not, update movie to database
+                else
+                    return res.status(200).send({success: true, message: 'Movie successfully updated.'});
+                });
+                
             }
         })
     }
 
 })
-
+})
 //jwt authenticated
 .delete(authJwtController.isAuthenticated, function(req, res) {
     Movie.findOneAndDelete({Title: req.params.movieTitle}, function(err, movie){
@@ -201,7 +222,7 @@ router.route('/movies/:movieTitle')
 })
 });
 
-})
+
 
 router.all('/', function (req, res) {
     return res.status(403).json({ success: false, msg: 'Route not supported.' });
