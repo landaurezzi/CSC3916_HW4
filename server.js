@@ -171,29 +171,22 @@ router.route('/movies/:movieTitle')
                 return res.status(403).json({success: false, message: "Unable to update movie title."});
             }
             else{
-                
-                //generating fields
-                var movie = new Movie();
-                movie.Title = req.body.Title;
-                movie.YearReleased = req.body.YearReleased;
-                movie.genre = req.body.genre;
-                movie.Actors = req.body.Actors;
 
                 movie.save(function(err){
                 //check if movie is in database
                 if (err) {
-                    if (err.code == 11000)
+                    if (err.code == 11000){
                         return res.json({ success: false, message: 'Movie already exists.'});
-                    else
+                    }
+                    else{
                         return res.json(err);
-                
+                    }
                 
                 }
                 //if not, update movie to database
-                else
-                
+                else{
                     return res.status(200).send({success: true, message: 'Movie successfully updated.'});
-            
+                }
                 });
                 
             }
