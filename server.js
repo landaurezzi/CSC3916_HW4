@@ -161,7 +161,7 @@ router.route('/movies/:movieTitle')
     //find movie title
     Movie.findOne({Title: req.params.movieTitle}, function(err, movie){
     //if movie is null, then it didn't find movie
-    if(!req.body.find_Title){
+    if(!req.body.movie.Title === ""){
         return res.json({success: false, message: "Please fill current and new title to update movie."});
     }
     else{
