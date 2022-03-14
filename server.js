@@ -159,7 +159,7 @@ router.route('/movies/:movieTitle')
 .put(authJwtController.isAuthenticated, function(req, res) {
     //verify if movie has title
     Movie.findOne({Title: req.params.movieTitle}, function(err, movie){
-    if(!req.body.find_Title &&  !req.body.update_Title){
+    if(!req.body.find_Title || !req.body.update_Title){
         return res.json({success: false, message: "Please fill current and new title to update movie."});
     }
     else{
@@ -197,7 +197,7 @@ router.route('/movies/:movieTitle')
 })
 //jwt authenticated
 .delete(authJwtController.isAuthenticated, function(req, res) {
-    Movie.findOneAndDelete({Title: req.params.movieTitle}, function(err, movie){
+    Movie.findOne({Title: req.params.movieTitle}, function(err, movie){
     //verify if movie has title
     if(!req.body.find_Title){
         return res.json({success: false, message: "Please provide a title for the movie."});
