@@ -171,6 +171,7 @@ router.route('/movies/:movieTitle')
                 return res.status(403).json({success: false, message: "Unable to update movie title."});
             }
             else{
+                
                 //generating fields
                 var movie = new Movie();
                 movie.Title = req.body.Title;
@@ -190,7 +191,9 @@ router.route('/movies/:movieTitle')
                 }
                 //if not, update movie to database
                 else
+                
                     return res.status(200).send({success: true, message: 'Movie successfully updated.'});
+            
                 });
                 
             }
