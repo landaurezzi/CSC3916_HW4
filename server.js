@@ -144,6 +144,7 @@ router.route('/movies')
 });
 
 router.route('/movies/:movieTitle')
+
 .get(authJwtController.isAuthenticated, function(req, res) {
     //find movie title
     Movie.findOne({Title: req.params.movieTitle}, function(err, movie) {
@@ -153,14 +154,14 @@ router.route('/movies/:movieTitle')
     else {
         res.json(movie);
     }
-})
+    })
 })
 
 .put(authJwtController.isAuthenticated, function(req, res) {
     //find movie title
     Movie.findOne({Title: req.params.movieTitle}, function(err, movie){
     //if movie is null, then it didn't find movie
-    if(!req.body.movie.Title){
+    if(!req.body.find_Title){
         return res.json({success: false, message: "Please fill current and new title to update movie."});
     }
     else{
@@ -188,7 +189,7 @@ router.route('/movies/:movieTitle')
     }
     })
 })
-//jwt authenticated
+
 .delete(authJwtController.isAuthenticated, function(req, res) {
     Movie.findOne({Title: req.params.movieTitle}, function(err, movie){
     //verify if movie has title
