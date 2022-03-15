@@ -193,7 +193,7 @@ router.route('/movies/:movieTitle')
 .delete(authJwtController.isAuthenticated, function(req, res) {
     Movie.findOne({Title: req.params.movieTitle}, function(err, movie){
     //verify if movie has title
-    if(!req.body.Title){
+    if(!req.body.movieTitle){
         return res.json({success: false, message: "Please provide a title for the movie."});
     }
     else{
