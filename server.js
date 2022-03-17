@@ -197,7 +197,7 @@ router.route('/movies/:movieTitle')
         return res.json({success: false, message: "Please provide a title for the movie."});
     }
     else{
-        Movie.findOneAndDelete({Title:movieTitle}, function(err, movie){
+        Movie.findOneAndDelete({Title:req.params.movieTitle}, function(err, movie){
             if(err){
                 return res.status(403).json({success: false, message: "Unable to delete movie title."});
             }
