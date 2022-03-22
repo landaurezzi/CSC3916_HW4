@@ -12,3 +12,16 @@ try {
     console.log("could not connect");
 }
 //mongoose.set('setCreateIndex', true);
+var ReviewSchema = new Schema({
+    userID: {type: Schema.Types.ObjectID, ref: "UserSchema", required: true},
+    movieID: {type: Schema.Types.ObjectID, ref: "MovieSchema", required: true},
+    username: {type: String, required: true},
+    quote: {type: String, required: true},
+    rating: {type: Number, min: 1, max: 5, required: true}
+});
+
+ReviewSchema.pre('save', function(next){
+    next();
+});
+
+module.exports = mongoose.model('Review', ReviewSchema);
