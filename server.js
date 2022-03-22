@@ -15,7 +15,7 @@ var User = require('./Users');
 var Movie = require('./movies');
 var Review = require('./reviews');
 var mongoose = require('mongoose');
-var reqprom = require('request-promise');
+var rp = require('request-promise');
 var app = express();
 
 app.use(cors());
@@ -27,29 +27,29 @@ require ('dotenv').config({path: './.env'});
 
 const crypto = require("crypto");
 const { lookup } = require('dns');
-const analytics = process.env.GA_KEY;
+const GA_TRACKING_ID = process.env.GA_KEY;
 
 var router = express.Router();
 
 function analizePreferrences(dimension, metric, category, action, label, value) {
-    var request = {method: 'GET',
+    var options = {method: 'GET',
     url: 'https://www.google-analytics.com/collect',
-    qs: {
-        apiVersion: '1',
-        trackID: analytics,
-        clientID: crypto.randomBytes(16).toString("hex"),
-        typeE: 'event',
-        eventCat: category,
-        eventAc: action,
-        eventLa: label,
-        eventVal: value,
-        customDi: dimension,
-        customMe: metric
+    qs: {   //API version
+        v: '1',
+        tid: GA_TRACKING_ID,
+        cid: crypto.randomBytes(16).toString("hex"),
+        t: 'event',
+        ec: category,
+        ea: action,
+        el: label,
+        ev: value,
+        cd1: dimension,
+        cm1: metric
     },
     headers: {
         'Cache-Control': 'no-cache'
     }};
-    return reqprom(request);
+    return rp(options);
 }
 
 function getJSONObjectForMovieRequirement(req) {
