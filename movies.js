@@ -11,7 +11,7 @@ try {
 }catch (error) {
     console.log("could not connect");
 }
-//mongoose.set('useCreateIndex', true);
+mongoose.set('useCreateIndex', true);
 
 //movie schema
 var MovieSchema = new Schema({
@@ -19,6 +19,7 @@ var MovieSchema = new Schema({
     YearReleased: {type: String, required: true},
     genre: {
         type: String,
+        required: true,
         enum: ['Action', 'Adventure', 'Comedy', 'Drama', 'Fantasy', 'Horror', 'Mystery', 'Thriller'],
     },
     //add validation to pass at least three actors
