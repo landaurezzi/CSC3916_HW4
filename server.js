@@ -312,7 +312,7 @@ router.route('/movies/:movieTitle')
 router.route('/reviews')
 
 .post(authJwtController.isAuthenticated, function(req, res){
-    if(!req.body.quote || !req.body.rating || !req.body.Title){
+    if(!req.body.quote && !req.body.rating && !req.body.Title){
         return res.json({success: false, message: "Please include information for quote, rating, and title"});
     }
     else{
