@@ -313,7 +313,7 @@ router.route('/reviews')
 
 .post(authJwtController.isAuthenticated, function(req, res){
     //if(!req.body.quote || !req.body.rating || !req.body.Title){
-    if(!req.body.Title){
+    if(!req.body.movieID || !req.body.quote || !req.body.rating){
         return res.json({success: false, message: "Please include movie title"});
     }
     else{
