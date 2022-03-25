@@ -325,8 +325,8 @@ router.route('/reviews')
             }
             else{
                 review.userID = verRes.id;
-                //Movie.findOne({Title: req.body.Title}, function(err, movie){
-                Movie.findOne({movieID: req.body.movieID}, function(err, movie){
+                Movie.findOne({Title: req.body.Title}, function(err, movie){
+                //Movie.findOne({movieID: req.body.movieID}, function(err, movie){
                     if(err){
                         return res.status(403).json({success: false, message: "Unable to post movie review."});
                     }
