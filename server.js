@@ -312,8 +312,8 @@ router.route('/movies/:movieTitle')
 router.route('/reviews')
 
 .post(authJwtController.isAuthenticated, function(req, res){
-    //if(!req.body.quote || !req.body.rating || !req.body.Title){
-    if(!req.body.movieTitle){
+    //if(!req.body.movieTitle){
+    if(!movieTitle){
         return res.json({success: false, message: "Please include movie title"});
     }
     else{
@@ -326,7 +326,6 @@ router.route('/reviews')
             else{
                 review.userID = verRes.id;
                 Movie.findOne({Title: req.body.Title}, function(err, movie){
-                //Movie.findOne({movieID: req.body.movieID}, function(err, movie){
                     if(err){
                         return res.status(403).json({success: false, message: "Unable to post movie review."});
                     }
