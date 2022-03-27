@@ -31,7 +31,7 @@ const GA_TRACKING_ID = process.env.GA_KEY;
 
 var router = express.Router();
 
-function analizePreferrences(dimension, metric, category, action, label, value) {
+function analizePreferrences(category, action, label, value, dimension, metric) {
     var options = {method: 'GET',
     url: 'https://www.google-analytics.com/collect',
     qs: {   //API version
