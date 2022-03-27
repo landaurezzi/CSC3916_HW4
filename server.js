@@ -343,7 +343,7 @@ router.route('/reviews')
                                 return res.status(403).json({success: false, message: "Unable to post movie review."});
                             }
                             else{
-                                analizePreferrences(movie.genre, 'post/review', 'POST', review.rating.movie.Title, '1');
+                                analizePreferrences(movie.genre, 'post/review', 'POST', review.rating.movieTitle, '1');
                                 return res.status(200).json({success: true, message: "Successfully posted movie review", movie: movie});
                             }
                         })
