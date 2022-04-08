@@ -364,7 +364,16 @@ router.route('/reviews')
 router.all('/', function (req, res) {
     return res.status(403).json({ success: false, msg: 'Route not supported.' });
 });
-
+/*
+router.route('/test')
+    .get(function(req, res){
+        analizePreferrences('Feddback', 'Rating', 'Feedback for movie', '5', 'Inception', '1')
+        .then(function(response){
+            console.log(response.body);
+            res.status(200).send('Event tracked').end();
+        })
+    });
+*/
 app.use('/', router);
 app.listen(process.env.PORT || 8080);
 module.exports = app; // for testing only
