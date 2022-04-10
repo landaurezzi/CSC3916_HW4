@@ -22,6 +22,7 @@ var MovieSchema = new Schema({
         required: true,
         enum: ['Action', 'Adventure', 'Comedy', 'Drama', 'Fantasy', 'Horror', 'Mystery', 'Thriller'],
     },
+    imageUrl: {type: String},
     //add validation to pass at least three actors
     Actors: [
         {ActorName: {type: String, required: true}, CharacterName: {type: String, required: true}},
