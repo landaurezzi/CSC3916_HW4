@@ -192,6 +192,7 @@ router.route('/movies')
         movie.YearReleased = req.body.YearReleased;
         movie.genre = req.body.genre;
         movie.Actors = req.body.Actors;
+        movie.imageUrl = req.body.imageUrl;
 
         movie.save(function(err){
             //check if movie is in database
