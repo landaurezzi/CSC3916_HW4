@@ -153,29 +153,6 @@ router.route('/movies')
             res.json(movies).status(200).end();
         })
     }
-
-    /*
-    Movie.findOne({Title: req.movieTitle}, function(err, movie) {
-    //verify if movie has title
-    if(!req.body.Title)
-        return res.json({success: false, message: "Please provide a title for the movie."});
-    else{
-        Movie.find(req.body.find_Title).select("").exec(function(err, movie){
-            if(err){
-                return res.status(403).json({success: false, message: "Unable to retrieve movie."});
-            }
-            //code retrieved from github
-            if (movie && movie.length > 0) {
-                return res.status(200).json({success: true, message: "Successfully retrieved movie.", movie: movie});
-            }
-            else{
-                return res.status(404).json({success: false, message: "Movie not found."});
-            }
-        })
-    }    
-})
-
-*/
 })
 
 //jwt authenticated
@@ -274,6 +251,7 @@ router.route('/movies/:movieTitle')
         movie.YearReleased = req.body.YearReleased;
         movie.genre = req.body.genre;
         movie.Actors = req.body.Actors;
+        movie.imageUrl = req.body.imageUrl;
         movie.save(function(err){
         //check if movie is in database
         if (err) {
