@@ -344,6 +344,7 @@ router.route('/reviews')
                         review.username = verRes.username;
                         review.quote = req.body.quote
                         review.rating = req.body.rating;
+                        review.imageUrl = req.body.imageUrl;
 
                         review.save(function(err){
                             if(err){
