@@ -18,7 +18,7 @@ var ReviewSchema = new Schema({
     username: {type: String, required: true},
     quote: {type: String, required: true},
     rating: {type: Number, min: 1, max: 5, required: true},
-    imageUrl: {type: String}
+    //imageUrl: {type: String}
 });
 
 ReviewSchema.pre('save', function(next){
